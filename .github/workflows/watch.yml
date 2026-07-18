@@ -1,0 +1,39 @@
+name: CGV 왕십리 SCREENX 감시
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # 5분마다 실행
+  workflow_dispatch:         # Actions 탭에서 수동으로도 실행 가능하게
+
+permissions:
+  contents: write   # seen_sessions.json 파일을 저장소에 다시 커밋하기 위해 필요
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      MOV_NO: "30001192"       # <- 보고싶은 영화번호로 바꾸기
+      WINDOW_DAYS: "14"          # <- 오늘부터 며칠치를 감시할지 (14 = 2주치)
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+    steps:
+      - name: 저장소 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name: 파이썬 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: requests 라이브러리 설치
+        run: pip install requests
+
+      - name: 스케줄 체크 및 알림 전송
+        run: python wangsimni_screenx_alert.py
+
+      - name: 상태 파일(seen_sessions.json) 변경사항 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add seen_sessions.json
+          git diff --cached --quiet || git commit -m "감시 상태 업데이트"
+          git push
