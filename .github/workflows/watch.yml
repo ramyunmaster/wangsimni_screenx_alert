@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MOV_NO: "30001192"       # <- 보고싶은 영화번호로 바꾸기
-      WINDOW_DAYS: "14"          # <- 오늘부터 며칠치를 감시할지 (14 = 2주치)
+      WINDOW_DAYS: "30"          # <- 오늘부터 며칠치를 감시할지 (14 = 2주치)
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
     steps:
       - name: 저장소 코드 가져오기
