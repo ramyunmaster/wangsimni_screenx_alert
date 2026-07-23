@@ -101,7 +101,7 @@ def send_discord_alert(webhook_url: str, message: str):
 def format_alert_message(scn_ymd: str, item: dict) -> str:
     date_fmt = f"{scn_ymd[:4]}-{scn_ymd[4:6]}-{scn_ymd[6:]}"
     return (
-        f"🎬 **왕십리 SCREENX 예매 오픈 감지!**\n"
+        f"@everyone 🎬 **왕십리 SCREENX 예매 오픈 감지!**\n"
         f"날짜: {date_fmt}\n"
         f"시간: {item.get('scnsrtTm')} ~ {item.get('scnendTm')}\n"
         f"잔여좌석: {item.get('frSeatCnt')} / {item.get('cpSeatCnt')}\n"
